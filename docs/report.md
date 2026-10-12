@@ -435,7 +435,7 @@ note: Selected My Bookings page load as the point to check whether lease end dat
 
 Phase 6. Public Render URL (not localhost). Markers open this to mark the three workflows.
 
-https://studentaccomadation.onrender.com/
+https://studentaccomadation.onrender.com
 
 Health check verified at `https://studentaccomadation.onrender.com/health` (returns `{"ok":true}`).
 
