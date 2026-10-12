@@ -444,6 +444,8 @@ Every account a marker needs, including extra users you added. Starter accounts:
 - demo-landlord / landlordpass — demo landlord; owns six automatically seeded St. Augustine-area listings
 - Register as a new tenant or landlord in the app if a marker needs a fresh role-specific account.
 
+In production, app startup creates these marker accounts if their usernames are missing, then ensures the six demo listings exist. Existing accounts are not overwritten.
+
 ## YouTube URL
 
 ## Session transcripts

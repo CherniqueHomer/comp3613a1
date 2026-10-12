@@ -12,9 +12,20 @@ from app.utilities.security import encrypt_password
 DEMO_LANDLORD_USERNAME = "demo-landlord"
 DEMO_LANDLORD_PASSWORD = "landlordpass"
 
+DEMO_ACCOUNTS = (
+    ("bob", "bob@example.com", "bobpass", "regular_user"),
+    ("admin", "admin@example.com", "adminpass", "admin"),
+    (
+        DEMO_LANDLORD_USERNAME,
+        "demo-landlord@example.com",
+        DEMO_LANDLORD_PASSWORD,
+        "landlord",
+    ),
+)
 
-def seed_demo_properties() -> int:
-    """Create the marker landlord and sample listings, without duplicating them."""
+
+def seed_demo_data() -> int:
+    """Create marker accounts and sample listings without duplicating them."""
     today = date.today()
     availability_end = today + timedelta(days=365)
     property_specs: list[tuple[str, str, float, str, str, str]] = [
@@ -70,18 +81,19 @@ def seed_demo_properties() -> int:
 
     with Session(engine) as session:
         user_repository = UserRepository(session)
+        for username, email, password, role in DEMO_ACCOUNTS:
+            if user_repository.get_by_username(username) is None:
+                user_repository.create(
+                    User(
+                        username=username,
+                        email=email,
+                        password=encrypt_password(password),
+                        role=role,
+                    )
+                )
+
         landlord = user_repository.get_by_username(DEMO_LANDLORD_USERNAME)
-        if landlord is None:
-            landlord = User(
-                username=DEMO_LANDLORD_USERNAME,
-                email="demo-landlord@example.com",
-                password=encrypt_password(DEMO_LANDLORD_PASSWORD),
-                role="landlord",
-            )
-            session.add(landlord)
-            session.commit()
-            session.refresh(landlord)
-        elif landlord.role != "landlord":
+        if landlord is None or landlord.role != "landlord":
             raise ValueError(
                 f"Cannot seed demo listings: {DEMO_LANDLORD_USERNAME} "
                 "already exists without the landlord role."

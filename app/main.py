@@ -20,10 +20,10 @@ async def lifespan(app: FastAPI):
     # First boot on Render often races the free Postgres instance.
     ensure_db_and_tables()
     if get_settings().env.lower() in {"prod", "production"}:
-        from app.demo_data import seed_demo_properties
+        from app.demo_data import seed_demo_data
 
-        seeded_count = seed_demo_properties()
-        logger.info("Demo property seed complete; created %s listing(s)", seeded_count)
+        seeded_count = seed_demo_data()
+        logger.info("Demo data seed complete; created %s listing(s)", seeded_count)
     yield
 
 
