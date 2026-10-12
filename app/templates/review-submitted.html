@@ -1,0 +1,13 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Review Submitted{% endblock %}
+
+{% block subpage_content %}
+<section class="property-success-card">
+  <div class="property-success-icon">
+    <span class="material-symbols-outlined" aria-hidden="true">check</span>
+  </div>
+  <h1>Review Submitted!</h1>
+  <p>Your review for <strong>{{ listing.title }}</strong> is now public.</p>
+  <a class="btn-brand" href="{{ url_for('my_bookings_view') }}">Back to My Bookings</a>
+</section>
+{% endblock %}

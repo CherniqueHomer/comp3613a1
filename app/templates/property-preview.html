@@ -1,0 +1,40 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Preview Listing{% endblock %}
+
+{% block subpage_content %}
+<section class="property-preview-card">
+  <h1>Review your listing</h1>
+  <p class="property-preview-intro">Check these details before publishing. Your listing will be active as soon as you publish it.</p>
+
+  <div class="property-preview-layout">
+    <img class="property-preview-photo" src="{{ details.photo_url }}" alt="Photo of {{ details.title }}">
+    <div>
+      <h2>{{ details.title }}</h2>
+      <p class="listing-address">{{ details.address }}</p>
+      <p class="listing-price">${{ "%.2f"|format(details.price) }} / month</p>
+      <p class="property-preview-description">{{ details.description }}</p>
+      <div class="property-preview-amenities">
+        {% for amenity in details.amenities.split(", ") if amenity %}
+        <span>{{ amenity }}</span>
+        {% endfor %}
+      </div>
+      <p class="listing-meta mb-1">Available {{ details.availability_start.strftime("%b %d, %Y") }} – {{ details.availability_end.strftime("%b %d, %Y") }}</p>
+      <p class="listing-meta">Lease duration: {{ details.lease_duration_months }} months</p>
+    </div>
+  </div>
+
+  <form method="post" action="{{ url_for('publish_property') }}" class="property-preview-actions">
+    <input type="hidden" name="title" value="{{ details.title }}">
+    <input type="hidden" name="address" value="{{ details.address }}">
+    <input type="hidden" name="price" value="{{ details.price }}">
+    <input type="hidden" name="description" value="{{ details.description }}">
+    <input type="hidden" name="amenities" value="{{ details.amenities }}">
+    <input type="hidden" name="photo_url" value="{{ details.photo_url }}">
+    <input type="hidden" name="availability_start" value="{{ details.availability_start.isoformat() }}">
+    <input type="hidden" name="availability_end" value="{{ details.availability_end.isoformat() }}">
+    <input type="hidden" name="lease_duration_months" value="{{ details.lease_duration_months }}">
+    <button class="btn-secondary" type="submit" formaction="{{ url_for('edit_property_preview') }}">Edit Details</button>
+    <button class="btn-accent" type="submit">Publish Listing</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Leave a Review{% endblock %}
+
+{% block subpage_content %}
+<section class="booking-form-card review-form-card">
+  <h1>{{ listing.title }}</h1>
+  <p class="listing-address">{{ listing.address }} · Completed stay</p>
+
+  <form method="post" action="{{ url_for('submit_review', booking_id=booking.bookingID) }}">
+    <fieldset class="review-rating-field">
+      <legend class="form-label">Your Rating</legend>
+      <div class="review-rating-options" role="radiogroup" aria-label="Your rating">
+        {% for value in [1, 2, 3, 4, 5] %}
+        <input id="rating-{{ value }}" type="radio" name="rating" value="{{ value }}" required>
+        <label for="rating-{{ value }}" aria-label="{{ value }} star{{ '' if value == 1 else 's' }}">
+          <span class="rating-star" aria-hidden="true">★</span>
+        </label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div class="mb-4">
+      <label class="form-label" for="comment">Comment</label>
+      <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Share your experience..."></textarea>
+    </div>
+
+    <div class="property-form-actions">
+      <a class="btn-secondary" href="{{ url_for('my_bookings_view') }}">Cancel</a>
+      <button class="btn-accent" type="submit">Submit Review</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

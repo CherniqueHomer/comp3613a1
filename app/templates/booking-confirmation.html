@@ -1,0 +1,23 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Booking Request Sent{% endblock %}
+
+{% block subpage_content %}
+<section class="property-success-card">
+  <div class="property-success-icon">
+    <span class="material-symbols-outlined" aria-hidden="true">check</span>
+  </div>
+  <h1>Booking Request Sent!</h1>
+  <p>Your request for <strong>{{ listing.title }}</strong> has been sent to the landlord.</p>
+  <div class="booking-confirmation-summary">
+    <span>Move-in date</span>
+    <strong>{{ booking.move_in_date.strftime("%b %d, %Y") }}</strong>
+    <span>Lease duration</span>
+    <strong>{{ booking.lease_duration_months }} months</strong>
+    <span>Request status</span>
+    <strong class="status-badge status-pending">{{ booking.status }}</strong>
+    <span>Booking reference</span>
+    <strong class="booking-reference">BK{{ booking.created_at.strftime("%y") }}-{{ "%04d"|format(booking.bookingID) }}</strong>
+  </div>
+  <a class="btn-brand" href="{{ url_for('my_bookings_view') }}">View My Bookings</a>
+</section>
+{% endblock %}

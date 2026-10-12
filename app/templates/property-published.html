@@ -1,0 +1,14 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Listing Published{% endblock %}
+
+{% block subpage_content %}
+<section class="property-success-card">
+  <div class="property-success-icon">
+    <span class="material-symbols-outlined" aria-hidden="true">check</span>
+  </div>
+  <h1>Listing Published!</h1>
+  <p>Your property is now visible to students looking for a home.</p>
+  <p class="fw-semibold">{{ listing.title }}</p>
+  <a class="btn-brand" href="{{ url_for('property_listings_view') }}">Back to My Listings</a>
+</section>
+{% endblock %}

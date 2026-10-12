@@ -1,0 +1,49 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Booking Requests{% endblock %}
+
+{% block subpage_content %}
+<div class="listing-page-header">
+  <div>
+    <h1>Booking Requests</h1>
+    <p>Review requests for your listed properties.</p>
+  </div>
+</div>
+
+{% if booking_rows %}
+<div class="booking-list">
+  {% for booking, listing in booking_rows %}
+  <article class="booking-list-card landlord-booking-card">
+    <div class="landlord-booking-details">
+      <h2>{{ listing.title if listing else "Property no longer available" }}</h2>
+      <p class="listing-meta mb-1">Applicant: {{ booking.applicant_name }}</p>
+      <p class="listing-meta mb-1">Contact: {{ booking.applicant_contact }}</p>
+      <p class="listing-meta mb-1">Student ID: {{ booking.student_id }}</p>
+      <p class="listing-meta mb-1">Move-in: {{ booking.move_in_date.strftime("%b %d, %Y") }}</p>
+      <p class="listing-meta mb-1">Lease: {{ booking.lease_duration_months }} months</p>
+      {% if booking.message %}
+      <p class="listing-meta mb-0">Message: {{ booking.message }}</p>
+      {% endif %}
+    </div>
+    <span class="status-badge status-{{ booking.status|lower }}">{{ booking.status }}</span>
+    {% if booking.status|lower == 'pending' %}
+    <div class="booking-list-actions">
+      <form method="post" action="{{ url_for('approve_booking', booking_id=booking.bookingID) }}">
+        <button class="btn-brand" type="submit">Approve</button>
+      </form>
+      <form method="post" action="{{ url_for('reject_booking', booking_id=booking.bookingID) }}">
+        <button class="btn-secondary" type="submit">Reject</button>
+      </form>
+    </div>
+    {% endif %}
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<section class="listing-empty-state">
+  <span class="material-symbols-outlined" aria-hidden="true">event_available</span>
+  <h2>No booking requests yet</h2>
+  <p>Requests for your properties will appear here.</p>
+  <a class="btn-brand" href="{{ url_for('property_listings_view') }}">Back to My Listings</a>
+</section>
+{% endif %}
+{% endblock %}

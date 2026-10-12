@@ -33,10 +33,20 @@ async def login_action_ajax(
             status_code=status.HTTP_303_SEE_OTHER,
         )
 
-    user = user_repo.get_by_username(username)
-    dest = "admin_home_view" if user and user.role == "admin" else "user_home_view"
+    authenticated_user = user_repo.get_by_username(username)
+    if authenticated_user is None:
+        flash(request, "Incorrect username or password", "danger")
+        return RedirectResponse(
+            url=request.url_for("login_view"),
+            status_code=status.HTTP_303_SEE_OTHER,
+        )
+
+    if authenticated_user.role == "landlord":
+        destination = "property_listings_view"
+    else:
+        destination = "property_catalogue_view"
     response = RedirectResponse(
-        url=request.url_for(dest),
+        url=request.url_for(destination),
         status_code=status.HTTP_303_SEE_OTHER,
     )
     response.set_cookie(

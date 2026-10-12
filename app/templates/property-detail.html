@@ -1,0 +1,62 @@
+{% extends "authenticated-base.html" %}
+{% block title %}{{ listing.title }}{% endblock %}
+
+{% block subpage_content %}
+<section class="property-detail-card">
+  <div class="property-detail-layout">
+    {% if listing.photo_url %}
+    <img class="property-detail-photo" src="{{ listing.photo_url }}" alt="Photo of {{ listing.title }}">
+    {% else %}
+    <div class="listing-photo-placeholder property-detail-photo-placeholder" aria-hidden="true">
+      <span class="material-symbols-outlined">home</span>
+    </div>
+    {% endif %}
+    <div class="property-detail-copy">
+      <p class="listing-address mb-1">{{ listing.address }}</p>
+      <h1>{{ listing.title }}</h1>
+      <p class="listing-price">${{ "%.2f"|format(listing.price) }} / month</p>
+      <p class="property-preview-description">{{ listing.description }}</p>
+      <div class="property-preview-amenities">
+        {% for amenity in listing.amenities.split(", ") if amenity %}
+        <span>{{ amenity }}</span>
+        {% endfor %}
+      </div>
+      {% if listing.availability_start <= listing.availability_end %}
+      <p class="listing-meta mb-1">Available period {{ listing.availability_start.strftime("%b %d, %Y") }} – {{ listing.availability_end.strftime("%b %d, %Y") }}. The full lease must end by this date.</p>
+      {% else %}
+      <p class="listing-meta mb-1">No dates remain in the current availability period.</p>
+      {% endif %}
+      <p class="listing-meta">Lease duration: {{ listing.lease_duration_months }} months</p>
+      <div class="property-detail-actions">
+        <a class="btn-secondary" href="{{ url_for('property_catalogue_view') }}">Back to Browse</a>
+        {% if listing.availability_start <= listing.availability_end %}
+        <a class="btn-accent" href="{{ url_for('booking_form_view', property_id=listing.propertyID) }}">Book Now</a>
+        {% else %}
+        <span class="listing-meta">No booking dates currently available</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <section class="property-reviews" aria-labelledby="property-reviews-title">
+    <h2 id="property-reviews-title">Reviews ({{ reviews|length }})</h2>
+    {% if reviews %}
+    <div class="property-review-list">
+      {% for review in reviews %}
+      <article class="property-review">
+        <p class="property-review-rating" aria-label="{{ review.rating }} out of 5 stars">
+          {{ "★" * review.rating }}{{ "☆" * (5 - review.rating) }}
+          <span>{{ review.rating }}/5</span>
+        </p>
+        {% if review.comment %}
+        <p class="property-review-comment">{{ review.comment }}</p>
+        {% endif %}
+        <p class="listing-meta mb-0">{{ review.created_at.strftime("%b %d, %Y") }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="listing-meta mb-0">No reviews yet.</p>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}

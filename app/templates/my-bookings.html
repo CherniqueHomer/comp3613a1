@@ -1,0 +1,40 @@
+{% extends "authenticated-base.html" %}
+{% block title %}My Bookings{% endblock %}
+
+{% block subpage_content %}
+<div class="listing-page-header">
+  <div>
+    <h1>My Bookings</h1>
+    <p>Review your accommodation requests and their status.</p>
+  </div>
+</div>
+
+{% if booking_rows %}
+<div class="booking-list">
+  {% for booking, listing, has_review in booking_rows %}
+  <article class="booking-list-card">
+    <div>
+      <h2>{{ listing.title if listing else "Property no longer available" }}</h2>
+      <p class="listing-meta mb-1">Move-in: {{ booking.move_in_date.strftime("%b %d, %Y") }}</p>
+      <p class="listing-meta mb-0">Lease: {{ booking.lease_duration_months }} months</p>
+    </div>
+    <span class="status-badge status-{{ booking.status|lower }}">{{ booking.status }}</span>
+    <div class="booking-list-actions">
+      {% if booking.status|lower == 'completed' and not has_review %}
+      <a class="btn-brand" href="{{ url_for('review_form_view', booking_id=booking.bookingID) }}">Leave Review</a>
+      {% elif has_review %}
+      <span class="listing-meta">Review submitted</span>
+      {% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<section class="listing-empty-state">
+  <span class="material-symbols-outlined" aria-hidden="true">event_available</span>
+  <h2>No bookings yet</h2>
+  <p>When you find a place you like, send a booking request and it will appear here.</p>
+  <a class="btn-brand" href="{{ url_for('property_catalogue_view') }}">Browse Properties</a>
+</section>
+{% endif %}
+{% endblock %}

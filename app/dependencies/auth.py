@@ -53,3 +53,23 @@ async def is_admin_dep(user: AuthDep):
     return user
 
 AdminDep = Annotated[User, Depends(is_admin_dep)]
+
+async def is_landlord_dep(user: AuthDep):
+    if user.role != "landlord":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only landlord accounts can access listing management.",
+        )
+    return user
+
+LandlordDep = Annotated[User, Depends(is_landlord_dep)]
+
+async def is_tenant_dep(user: AuthDep):
+    if user.role not in {"tenant", "regular_user"}:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only student / tenant accounts can access this page.",
+        )
+    return user
+
+TenantDep = Annotated[User, Depends(is_tenant_dep)]

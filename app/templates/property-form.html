@@ -1,0 +1,62 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Add a Listing{% endblock %}
+
+{% block subpage_content %}
+{% set selected_amenities = details.amenities.split(', ') if details is defined and details.amenities else [] %}
+<section class="property-form-card">
+  <h1>Create a new property listing</h1>
+  <p class="property-form-intro">Share the details students need to decide if this place feels like home.</p>
+
+  <form method="post" action="{{ url_for('preview_property') }}">
+    <div class="row g-3">
+      <div class="col-md-7">
+        <label class="form-label" for="title">Title</label>
+        <input class="form-control" id="title" name="title" value="{{ details.title if details is defined else '' }}" required>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label" for="address">Address</label>
+        <input class="form-control" id="address" name="address" value="{{ details.address if details is defined else '' }}" required>
+      </div>
+      <div class="col-md-5">
+        <label class="form-label" for="price">Price per month ($)</label>
+        <input class="form-control" type="number" id="price" name="price" min="0.01" step="0.01" value="{{ details.price if details is defined else '' }}" required>
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="3" required>{{ details.description if details is defined else '' }}</textarea>
+      </div>
+      <fieldset class="col-12">
+        <legend class="form-label">Amenities</legend>
+        <div class="amenity-options">
+          {% for amenity in ["Kitchen", "Furnished", "WiFi", "Other"] %}
+          <label class="amenity-option">
+            <input type="checkbox" name="amenities" value="{{ amenity }}" {% if amenity in selected_amenities %}checked{% endif %}>
+            {{ amenity }}
+          </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <div class="col-md-6">
+        <label class="form-label" for="photo_url">Photo URL</label>
+        <input class="form-control" type="url" id="photo_url" name="photo_url" value="{{ details.photo_url if details is defined else '' }}" placeholder="https://example.com/property.jpg" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label" for="availability_start">Available from</label>
+        <input class="form-control" type="date" id="availability_start" name="availability_start" value="{{ details.availability_start.isoformat() if details is defined else '' }}" required>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label" for="availability_end">Available until (lease must end by this date)</label>
+        <input class="form-control" type="date" id="availability_end" name="availability_end" value="{{ details.availability_end.isoformat() if details is defined else '' }}" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="lease_duration_months">Lease duration (months)</label>
+        <input class="form-control" type="number" id="lease_duration_months" name="lease_duration_months" min="1" value="{{ details.lease_duration_months if details is defined else '' }}" required>
+      </div>
+    </div>
+    <div class="property-form-actions">
+      <a class="btn-secondary" href="{{ url_for('property_listings_view') }}">Cancel</a>
+      <button class="btn-brand" type="submit">Preview Listing</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

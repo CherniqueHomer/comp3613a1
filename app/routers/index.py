@@ -1,7 +1,7 @@
 from fastapi import Request
 from fastapi.responses import HTMLResponse
 
-from app.dependencies.auth import IsUserLoggedIn, get_current_user, is_admin
+from app.dependencies.auth import IsUserLoggedIn, get_current_user
 from app.dependencies.session import SessionDep
 from . import router, templates
 
@@ -12,13 +12,11 @@ async def index_view(
     user_logged_in: IsUserLoggedIn,
     db: SessionDep,
 ):
-    app_home = request.url_for("login_view")
+    app_home = request.url_for("property_catalogue_view") if user_logged_in else request.url_for("login_view")
     if user_logged_in:
         user = await get_current_user(request, db)
-        if await is_admin(user):
-            app_home = request.url_for("admin_home_view")
-        else:
-            app_home = request.url_for("user_home_view")
+        if user.role == "landlord":
+            app_home = request.url_for("property_listings_view")
 
     return templates.TemplateResponse(
         request=request,

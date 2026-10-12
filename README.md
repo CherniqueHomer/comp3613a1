@@ -180,6 +180,11 @@ Service shape lives in [`render.yaml`](render.yaml) (Blueprint reference for the
 python manage.py init --no-drop && python manage.py run --host 0.0.0.0 --port $PORT
 ```
 
+On production startup, the app idempotently creates a `demo-landlord` account
+(`landlordpass`) and six active sample listings in St. Augustine, Florida. The
+existing `admin` account remains separate. These are public demo credentials;
+change them before using the deployment for real data.
+
 6. Confirm the deploy is live and `GET /health` succeeds. Put the public URL and the marker logins (username, password, role) in `docs/report.md`.
 
 Free web services sleep after inactivity. Free Postgres expires after 30 days. Do not also apply `render.yaml` in the Dashboard if the MCP already created these resources — that makes a second copy.

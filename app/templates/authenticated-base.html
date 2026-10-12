@@ -1,113 +1,42 @@
 {% extends "base.html" %}
 
 {% block internal_css %}
-<style>
-    body {
-        overflow-x: hidden;
-        background: #f4f6f8;
-    }
-
-    #wrapper {
-        display: flex;
-        min-height: 100vh;
-    }
-
-    #sidebar {
-        min-width: 250px;
-        max-width: 250px;
-        min-height: 100vh;
-        transition: all 0.3s;
-        background: var(--brand-sidebar);
-        color: #fff;
-    }
-
-    #sidebar.collapsed {
-        margin-left: -250px;
-    }
-
-    #sidebar .nav-link {
-        color: var(--brand-sidebar-text);
-        font-weight: 500;
-    }
-
-    #sidebar .nav-link:hover,
-    #sidebar .nav-link.active {
-        color: #fff;
-        background-color: color-mix(in srgb, var(--brand-accent) 55%, #000);
-        border-radius: 0.5rem;
-    }
-
-    #sidebar .brand-wordmark {
-        color: #fff;
-        font-size: 1.25rem;
-        text-align: center;
-        margin: 1rem 0 1.5rem;
-    }
-
-    #content {
-        width: 100%;
-        padding: 1rem;
-        transition: all 0.3s;
-        display: flex;
-        flex-direction: column;
-        background-color: #f4f6f8;
-    }
-
-    .navbar {
-        border-bottom: 1px solid #dee2e6;
-    }
-</style>
 {% block additional_styles %}{% endblock %}
 {% endblock %}
 
 {% block content %}
-<div id="wrapper">
-    <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
-        <div class="brand-wordmark">FastStarter</div>
-
-        <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.url.path.startswith('/app') }}"
-                   href="{{ url_for('user_home_view') }}">
-                    <span class="material-symbols-outlined me-2">home</span>
-                    Home
-                </a>
-            </li>
-            <li class="nav-item mt-auto">
-                <a class="nav-link d-flex align-items-center text-danger" href="{{ url_for('logout') }}">
-                    <span class="material-symbols-outlined me-2">logout</span>
-                    Logout
-                </a>
-            </li>
-        </ul>
+<header class="workspace-bar">
+  <div class="workspace-bar-inner">
+    <a class="brand-lockup" href="{{ url_for('user_home_view') }}" aria-label="Student Accommodation workspace">
+      {% include "brand-mark.html" %}
+    </a>
+    <nav class="workspace-nav" aria-label="Main navigation">
+      {% if user.role == 'landlord' %}
+      <a class="{{ 'active' if request.url.path.startswith('/app/properties/mine') else '' }}" href="{{ url_for('property_listings_view') }}">My Listings</a>
+      <a class="{{ 'active' if request.url.path.startswith('/app/properties/new') else '' }}" href="{{ url_for('property_form_view') }}">Add Listing</a>
+      <a class="{{ 'active' if request.url.path.startswith('/app/landlord/bookings') else '' }}" href="{{ url_for('landlord_bookings_view') }}">Bookings</a>
+      {% else %}
+      <a class="{{ 'active' if request.url.path.startswith('/app/browse') or request.url.path.startswith('/app/properties/') else '' }}" href="{{ url_for('property_catalogue_view') }}">Browse</a>
+      <a class="{{ 'active' if request.url.path.startswith('/app/bookings') else '' }}" href="{{ url_for('my_bookings_view') }}">My Bookings</a>
+      <span class="workspace-nav-pending" aria-disabled="true" title="Available with the profile workflow">Profile</span>
+      {% endif %}
     </nav>
-
-    <div id="content">
-        <nav class="navbar navbar-expand-lg bg-white mb-4 px-3 rounded-3 shadow-sm">
-            <button class="btn btn-outline-secondary" id="menu-toggle" type="button">
-                <span class="material-symbols-outlined md-dark">menu</span>
-            </button>
-            <div class="ms-auto d-flex align-items-center gap-3">
-                <span class="fw-semibold">Welcome, {{ user.username }}</span>
-            </div>
-        </nav>
-
-        <div class="row">
-            <div class="col-12">
-                {% for message in get_flashed_messages(request) %}
-                <div class="alert alert-{{ message.type }}" role="alert">{{ message.message }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        {% block subpage_content %}{% endblock %}
+    <div class="workspace-user">
+      <span class="workspace-username">{{ user.username }}</span>
+      <span class="workspace-role">{{ 'Landlord' if user.role == 'landlord' else 'Student / Tenant' }}</span>
+      <a class="btn-secondary" href="{{ url_for('logout') }}">Logout</a>
     </div>
-</div>
+  </div>
+</header>
 
-<script>
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-        document.getElementById("sidebar").classList.toggle("collapsed");
-    });
-</script>
+<main class="workspace-main">
+  <div class="workspace-flashes">
+    {% for message in get_flashed_messages(request) %}
+    <div class="alert alert-{{ message.type }}" role="alert">{{ message.message }}</div>
+    {% endfor %}
+  </div>
+  {% block subpage_content %}{% endblock %}
+</main>
+
 {% block subpage_scripts %}{% endblock %}
 {% endblock %}

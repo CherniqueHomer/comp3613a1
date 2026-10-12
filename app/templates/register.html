@@ -4,26 +4,37 @@
 {% block content %}
 <div class="auth-shell">
   <div class="auth-panel">
-    <a class="auth-back" href="{{ url_for('index_view') }}">← Home</a>
-    <div class="brand-wordmark">FastStarter</div>
-    <p class="auth-tagline">Create an account</p>
+    <a class="auth-back" href="{{ url_for('index_view') }}">← Back to home</a>
+    <a class="brand-lockup" href="{{ url_for('index_view') }}" aria-label="Student Accommodation home">
+      {% include "brand-mark.html" %}
+    </a>
+    <h1>Create your account</h1>
+    <p class="auth-tagline">Start finding or sharing a student home.</p>
 
     <form method="POST" action="{{ url_for('register_view') }}">
       <div class="mb-3">
         <label class="form-label" for="username">Username</label>
-        <input class="form-control" type="text" id="username" name="username" required autofocus>
+        <input class="form-control" type="text" id="username" name="username" autocomplete="username" required autofocus>
       </div>
       <div class="mb-3">
         <label class="form-label" for="email">Email</label>
-        <input class="form-control" type="email" id="email" name="email" required>
+        <input class="form-control" type="email" id="email" name="email" autocomplete="email" required>
       </div>
       <div class="mb-3">
         <label class="form-label" for="password">Password</label>
-        <input class="form-control" type="password" id="password" name="password" required>
+        <input class="form-control" type="password" id="password" name="password" autocomplete="new-password" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="role">I am a</label>
+        <select class="form-select" id="role" name="role" required>
+          <option value="" selected disabled>Choose an account type</option>
+          <option value="tenant">Student / Tenant</option>
+          <option value="landlord">Landlord</option>
+        </select>
       </div>
       <div class="d-grid gap-2 mb-3">
-        <button class="btn btn-primary btn-lg" type="submit">Register</button>
-        <a class="btn btn-outline-secondary" href="{{ url_for('login_view') }}">Back to sign in</a>
+        <button class="btn-brand" type="submit">Create account</button>
+        <a class="btn-secondary" href="{{ url_for('login_view') }}">I already have an account</a>
       </div>
 
       {% for message in get_flashed_messages(request) %}

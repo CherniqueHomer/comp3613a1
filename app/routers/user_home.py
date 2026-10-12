@@ -1,21 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
+from fastapi import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi import status
-from app.dependencies.session import SessionDep
-from app.dependencies.auth import AuthDep, IsUserLoggedIn, get_current_user, is_admin
+from app.dependencies.auth import AuthDep
 from . import router, templates
 
 
 @router.get("/app", response_class=HTMLResponse)
-async def user_home_view(
-    request: Request,
-    user: AuthDep,
-    db:SessionDep
-):
-    return templates.TemplateResponse(
-        request=request, 
-        name="app.html",
-        context={
-            "user": user
-        }
-    )
+async def user_home_view(request: Request, user: AuthDep):
+    if user.role == "landlord":
+        return RedirectResponse(url=request.url_for("property_listings_view"), status_code=303)
+    return RedirectResponse(url=request.url_for("property_catalogue_view"), status_code=303)

@@ -1,7 +1,7 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi import Request, status, Form, HTTPException
 from app.dependencies import SessionDep
-from app.schemas.auth import SignupRequest
+from app.schemas.auth import AccountRole
 from app.services.auth_service import AuthService
 from app.repositories.user import UserRepository
 from app.utilities.flash import flash
@@ -21,12 +21,13 @@ def signup_user(request:Request, db:SessionDep,
     username: str = Form(),
     email: str = Form(),
     password: str = Form(),
+    role: AccountRole = Form(),
 ):
     user_repo = UserRepository(db)
     auth_service = AuthService(user_repo)
     try:
-        user = auth_service.register_user(username, email, password)
-        flash(request, "Registration completed! Sign in now!")
+        user = auth_service.register_user(username, email, password, role)
+        flash(request, "Account created. Sign in to continue.")
         return RedirectResponse(url=request.url_for("login_view"), status_code=status.HTTP_303_SEE_OTHER)
     except Exception as e:
         flash(request, "Username or email already exists", "danger")

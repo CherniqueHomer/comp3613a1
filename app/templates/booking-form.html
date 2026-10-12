@@ -1,0 +1,56 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Booking Details{% endblock %}
+
+{% block subpage_content %}
+<section class="booking-form-card">
+  <h1>Booking Details</h1>
+  <div class="booking-form-layout">
+    <aside class="booking-selected-property">
+      {% if listing.photo_url %}
+      <img class="booking-property-photo" src="{{ listing.photo_url }}" alt="Photo of {{ listing.title }}">
+      {% else %}
+      <div class="listing-photo-placeholder booking-property-photo" aria-hidden="true"><span class="material-symbols-outlined">home</span></div>
+      {% endif %}
+      <h2>{{ listing.title }}</h2>
+      <p class="listing-address">{{ listing.address }}</p>
+      <p class="listing-price">${{ "%.2f"|format(listing.price) }} / month</p>
+    </aside>
+
+    <form method="post" action="{{ url_for('request_booking', property_id=listing.propertyID) }}">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label" for="move_in_date">Move-in date</label>
+          <input class="form-control" type="date" id="move_in_date" name="move_in_date"
+                 min="{{ listing.availability_start.isoformat() }}" max="{{ listing.availability_end.isoformat() }}" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="lease_duration_months">Lease duration (months)</label>
+          <input class="form-control" type="number" id="lease_duration_months" name="lease_duration_months"
+                 min="1" value="{{ listing.lease_duration_months }}" required>
+          <small class="form-text">The full lease must fit within the listing's availability period.</small>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="applicant_name">Full name</label>
+          <input class="form-control" id="applicant_name" name="applicant_name" autocomplete="name" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="applicant_contact">Contact</label>
+          <input class="form-control" id="applicant_contact" name="applicant_contact" autocomplete="tel" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="student_id">Student ID</label>
+          <input class="form-control" id="student_id" name="student_id" required>
+        </div>
+        <div class="col-12">
+          <label class="form-label" for="message">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="3" placeholder="Add a note for the landlord"></textarea>
+        </div>
+      </div>
+      <div class="property-form-actions">
+        <a class="btn-secondary" href="{{ url_for('property_detail_view', property_id=listing.propertyID) }}">Cancel</a>
+        <button class="btn-accent" type="submit">Book Now</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

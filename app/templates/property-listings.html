@@ -1,0 +1,53 @@
+{% extends "authenticated-base.html" %}
+{% block title %}My Listings{% endblock %}
+
+{% block subpage_content %}
+<div class="listing-page-header">
+  <div>
+    <h1>My Listings</h1>
+    <p>Manage the student homes you have shared.</p>
+  </div>
+  <a class="btn-brand" href="{{ url_for('property_form_view') }}">Add Listing</a>
+</div>
+
+{% if listings %}
+<div class="listing-grid">
+  {% for listing in listings %}
+  <article class="listing-card">
+    {% if listing.photo_url %}
+    <img class="listing-photo" src="{{ listing.photo_url }}" alt="Photo of {{ listing.title }}">
+    {% else %}
+    <div class="listing-photo-placeholder" aria-hidden="true">
+      <span class="material-symbols-outlined">home</span>
+    </div>
+    {% endif %}
+    <div class="listing-card-body">
+      <div class="listing-card-heading">
+        <h2>{{ listing.title }}</h2>
+        <span class="status-badge {{ 'status-active' if listing.status|lower == 'active' else 'status-inactive' }}">
+          {{ listing.status|upper }}
+        </span>
+      </div>
+      <p class="listing-address mb-2">{{ listing.address }}</p>
+      <p class="listing-price mb-2">${{ "%.2f"|format(listing.price) }} / month</p>
+      <p class="listing-meta mb-0">
+        {% if listing.availability_start <= listing.availability_end %}
+        Available {{ listing.availability_start.strftime("%b %d, %Y") }} –
+        {{ listing.availability_end.strftime("%b %d, %Y") }}
+        {% else %}
+        No dates remain in the current availability period.
+        {% endif %}
+      </p>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<section class="listing-empty-state">
+  <span class="material-symbols-outlined" aria-hidden="true">home_work</span>
+  <h2>No listings yet</h2>
+  <p>Add your first property to make it visible to students looking for a home.</p>
+  <a class="btn-brand" href="{{ url_for('property_form_view') }}">Add your first listing</a>
+</section>
+{% endif %}
+{% endblock %}

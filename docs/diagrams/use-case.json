@@ -1,0 +1,31 @@
+{
+  "system": "Student Accommodation",
+  "actors": [
+    {"name": "Landlord", "side": "left"},
+    {"name": "Tenant", "side": "right"}
+  ],
+  "use_cases": [
+    {
+      "name": "List a Property",
+      "actors": ["Landlord"]
+    },
+    {
+      "name": "View Property Details",
+      "actors": ["Tenant"]
+    },
+    {
+      "name": "Check Availability",
+      "actors": ["Tenant"]
+    },
+    {
+      "name": "Book a Property",
+      "actors": ["Tenant"],
+      "includes": ["View Property Details", "Check Availability"]
+    },
+    {
+      "name": "Leave a Review",
+      "actors": ["Tenant"],
+      "extends": ["Book a Property"]
+    }
+  ]
+}
