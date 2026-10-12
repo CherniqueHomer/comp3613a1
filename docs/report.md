@@ -164,9 +164,9 @@ note: Student explained color intent, original-mark direction, and selected the 
 
 One named workflow at a time. Include verify notes and polish / model revisions (Phase 5). Do not treat the first build as final.
 
-Theme verification: the student reported that the landing and auth screens look good. They requested role-specific taskbar links (tenant/student: Browse, My Bookings, Profile; landlord: My Listings, Add Listing, Bookings) and a direct Logout link.
+Theme verification: the student reported that the landing and auth screens look good. They requested role-specific taskbar links (tenant/student: Browse, My Bookings; landlord: My Listings, Add Listing, Bookings) and a direct Logout link. Profile was removed from the navigation because it is not a named workflow and has no designed screen.
 
-Phase 5 account setup: registration offers **Student / Tenant** (stored as `tenant`) or **Landlord** (stored as `landlord`). The authenticated bar displays the selected role and a direct Logout link. Browse, My Bookings, My Listings, Add Listing, and landlord Bookings are wired; Profile remains disabled because no profile workflow was named.
+Phase 5 account setup: registration offers **Student / Tenant** (stored as `tenant`) or **Landlord** (stored as `landlord`). The authenticated bar displays the selected role and a direct Logout link. Browse, My Bookings, My Listings, Add Listing, and landlord Bookings are wired.
 
 Role-selection verification: the student confirmed that the two account types and direct Logout behavior match the intended design.
 
@@ -233,7 +233,7 @@ passed: yes
 note: Correctly identified the Service as owning the initial Active-status decision.
 -->
 
-List a Property implementation: added the ERD-backed Property model and landlord FK, repository create/read methods, service role and date/price validation, and landlord-only My Listings → Add Listing → Preview → Publish → confirmation flow. Landlord registration now lands on My Listings. The landlord taskbar routes My Listings, Add Listing, and Bookings; tenant Browse and My Bookings are wired, while Profile remains disabled until that workflow is built.
+List a Property implementation: added the ERD-backed Property model and landlord FK, repository create/read methods, service role and date/price validation, and landlord-only My Listings → Add Listing → Preview → Publish → confirmation flow. Landlord registration now lands on My Listings. The landlord taskbar routes My Listings, Add Listing, and Bookings; tenant Browse and My Bookings are wired.
 
 List a Property verification: the student tested Add Listing, Preview, Publish Listing, and Edit Details and reported that all work. They confirmed the newly published property appears with an ACTIVE badge and that the workflow looks good against the wireframe; no polish changes were requested.
 

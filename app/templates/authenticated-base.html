@@ -18,7 +18,6 @@
       {% else %}
       <a class="{{ 'active' if request.url.path.startswith('/app/browse') or request.url.path.startswith('/app/properties/') else '' }}" href="{{ url_for('property_catalogue_view') }}">Browse</a>
       <a class="{{ 'active' if request.url.path.startswith('/app/bookings') else '' }}" href="{{ url_for('my_bookings_view') }}">My Bookings</a>
-      <span class="workspace-nav-pending" aria-disabled="true" title="Available with the profile workflow">Profile</span>
       {% endif %}
     </nav>
     <div class="workspace-user">

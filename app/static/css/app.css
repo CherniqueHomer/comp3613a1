@@ -537,14 +537,6 @@ textarea:focus-visible {
   background: var(--brand-primary-soft);
 }
 
-.workspace-nav-pending {
-  border-radius: 8px;
-  padding: 0.55rem 0.85rem;
-  color: var(--brand-subtle);
-  font-weight: 500;
-  cursor: not-allowed;
-}
-
 .workspace-user {
   display: flex;
   align-items: center;
@@ -563,14 +555,6 @@ textarea:focus-visible {
   color: var(--brand-muted);
   font-size: 0.85rem;
   font-weight: 500;
-}
-
-.workspace-nav-pending {
-  border-radius: 8px;
-  padding: 0.55rem 0.85rem;
-  color: var(--brand-subtle);
-  font-weight: 500;
-  cursor: not-allowed;
 }
 
 .workspace-main {
@@ -1068,11 +1052,6 @@ textarea:focus-visible {
   }
 
   .workspace-nav a,
-  .workspace-nav-pending {
-    padding: 0.5rem 0.6rem;
-    font-size: 0.88rem;
-  }
-
   .workspace-user {
     gap: 0.5rem;
   }
