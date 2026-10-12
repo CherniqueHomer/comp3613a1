@@ -248,7 +248,7 @@ note: Student verified Add Listing, Preview, Edit Details, Publish, ACTIVE statu
 -->
 
 Book a Property decision: overlapping Pending requests for the same property are allowed so landlords can review multiple requests; each submitted booking starts as `Pending`.
-Availability rule (revised during Phase 5 polish): the entire lease must fit within the listing's availability period. Pending requests may coexist; once a landlord approves one, the listing's earliest availability advances to the day after that lease ends. The student specified that a listing remains Active and visible in Browse even when no dates remain in its current window; the UI indicates that no booking dates are currently available.
+Availability rule (revised during Phase 5 polish): the entire lease must fit within the listing's availability period. Pending requests may coexist; once a landlord approves one, competing Pending requests are rejected and the listing becomes Booked / Inactive, hidden from Browse. When My Bookings detects the lease has completed, it marks the booking Completed, reactivates the listing, and advances availability to allow another booking.
 
 <!-- student-build:code-check
 workflow: Book a Property
@@ -353,6 +353,10 @@ Booking polish: the optional message field now defaults to empty; blank optional
 Leave a Review decisions: a tenant may review only a completed booking. After the student reported there was no review option, they chose landlord approval/rejection as supporting behavior for the existing named workflows, not as a new workflow. Approval changes a Pending request to Confirmed and rejects other Pending requests for that property; rejection changes the selected request to Rejected. Confirmed bookings become Completed automatically after the lease end date, checked when My Bookings loads. A pending booking is rejected by the Service, not the Router.
 Lease completion date: the booking auto-completes on the matching calendar day after its lease duration (for example, January 15 plus 12 months completes on January 15 the following year).
 
+Lease completion availability polish: when My Bookings detects a Confirmed lease has completed, the booking becomes Completed and the listing's next available date is set no earlier than the day after lease-end or today. Its availability end is extended when needed to fit one listing-standard lease term, allowing the active listing to accept another booking.
+
+Booked listing polish: after landlord approval, My Listings displays the listing as **Booked / Inactive** and it is no longer available in tenant Browse. On completion processing from My Bookings, the listing returns to Active and becomes bookable for a subsequent lease.
+
 <!-- student-build:code-check
 workflow: Leave a Review
 form: snippet
@@ -440,7 +444,6 @@ The service still needs to be deployed and this URL replaced with its verified p
 Every account a marker needs, including extra users you added. Starter accounts:
 
 - bob / bobpass — regular user (tenant flow)
-- admin / adminpass — admin
 - demo-landlord / landlordpass — demo landlord; owns six automatically seeded St. Augustine-area listings
 - Register as a new tenant or landlord in the app if a marker needs a fresh role-specific account.
 

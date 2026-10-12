@@ -81,7 +81,30 @@ class BookingService:
                 booking.status.lower() == "confirmed"
                 and today >= self._lease_end_date(booking)
             ):
-                self.booking_repository.update_status(booking, "Completed")
+                property_record = self.property_repository.get(booking.propertyID)
+                if property_record is None:
+                    self.booking_repository.update_status(booking, "Completed")
+                    continue
+
+                availability_start = max(
+                    property_record.availability_start,
+                    self._lease_end_date(booking) + timedelta(days=1),
+                    today,
+                )
+                next_term_end = self._lease_end_date_from(
+                    availability_start,
+                    property_record.lease_duration_months,
+                )
+                availability_end = max(
+                    property_record.availability_end,
+                    next_term_end,
+                )
+                self.booking_repository.complete_booking_and_reopen_property(
+                    booking,
+                    property_record,
+                    availability_start,
+                    availability_end,
+                )
 
         return [
             (

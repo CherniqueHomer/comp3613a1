@@ -41,6 +41,22 @@ class BookingRepository:
             booking_record.status = status
             self.db.add(booking_record)
         property_record.availability_start = availability_start
+        property_record.status = "booked"
+        self.db.add(property_record)
+        self.db.commit()
+
+    def complete_booking_and_reopen_property(
+        self,
+        booking_record: Booked,
+        property_record: Property,
+        availability_start: date,
+        availability_end: date,
+    ) -> None:
+        booking_record.status = "Completed"
+        property_record.status = "active"
+        property_record.availability_start = availability_start
+        property_record.availability_end = availability_end
+        self.db.add(booking_record)
         self.db.add(property_record)
         self.db.commit()
 

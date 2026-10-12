@@ -25,7 +25,7 @@
       <div class="listing-card-heading">
         <h2>{{ listing.title }}</h2>
         <span class="status-badge {{ 'status-active' if listing.status|lower == 'active' else 'status-inactive' }}">
-          {{ listing.status|upper }}
+          {{ 'Booked / Inactive' if listing.status|lower == 'booked' else listing.status|upper }}
         </span>
       </div>
       <p class="listing-address mb-2">{{ listing.address }}</p>
