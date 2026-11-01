@@ -652,7 +652,9 @@ def _section(markdown: str, *titles: str) -> str:
 def _marker_access(markdown: str) -> tuple[str, str, list[str]]:
     missing: list[str] = []
     deployed = _section(markdown, "deployed app", "deployed app link", "deploy url")
-    urls = re.findall(r"https?://[^\s)]+", deployed)
+    urls = re.findall(r"\[[^\]]*\]\((https?://[^)\s]+)\)", deployed)
+    if not urls:
+        urls = re.findall(r"https?://[^\s)]+", deployed)
     app_url = next((url for url in urls if "localhost" not in url and "127.0.0.1" not in url), "")
     if not app_url:
         app_url = "Not yet"

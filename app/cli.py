@@ -44,6 +44,14 @@ def cmd_init(args: argparse.Namespace) -> None:
     print(f"Database ready ({get_settings().database_uri}).")
     if getattr(args, "seed", True):
         cmd_seed(args)
+        if get_settings().env.lower() in {"prod", "production"}:
+            from app.demo_data import seed_demo_data
+
+            created_listings = seed_demo_data()
+            print(
+                "Production demo data ready; "
+                f"created {created_listings} listing(s)."
+            )
 
 
 def cmd_seed(args: argparse.Namespace) -> None:

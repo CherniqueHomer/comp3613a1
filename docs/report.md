@@ -1,3 +1,10 @@
+<!-- student-build:skill-integrity
+status: pass
+root: e84cd692d0b85eefe546385661958c27d07e8be6c5176a82012f68ccff5c8beb
+expected_root: e84cd692d0b85eefe546385661958c27d07e8be6c5176a82012f68ccff5c8beb
+mismatches: none
+-->
+
 # COMP 3613 Assignment 1
 
 Draft this file with the Guide. **Update it after every phase milestone** before you pause. The use-case diagram is a UML PNG at `docs/diagrams/use-case.png`, linked from this file as `diagrams/use-case.png` (path relative to `docs/report.md`). The model diagram is Mermaid. **Embed wireframe images** as `wireframes/<file>` (files live in `docs/wireframes/`).
@@ -435,7 +442,7 @@ note: Selected My Bookings page load as the point to check whether lease end dat
 
 Phase 6. Public Render URL (not localhost). Markers open this to mark the three workflows.
 
-https://studentaccomadation.onrender.com
+[https://studentaccomadation.onrender.com](https://studentaccomadation.onrender.com)
 
 Health check verified at `https://studentaccomadation.onrender.com/health` (returns `{"ok":true}`).
 
@@ -447,18 +454,125 @@ Every account a marker needs, including extra users you added. Starter accounts:
 - demo-landlord / landlordpass — demo landlord; owns six automatically seeded St. Augustine-area listings
 - Register as a new tenant or landlord in the app if a marker needs a fresh role-specific account.
 
-In production, app startup creates these marker accounts if their usernames are missing, then ensures the six demo listings exist. Existing accounts are not overwritten.
+In production, the Render `init --no-drop` startup step and app startup ensure these marker accounts and the six demo listings exist. Existing accounts are not overwritten.
+
+Deployment seeding verification: the student confirmed that the seeded listing now works on the deployed app. Health remains verified at `/health`; the student has not explicitly confirmed signing in with each marker account after the seeding fix.
+
+## GitHub repository
+
+[https://github.com/CherniqueHomer/comp3613a1.git](https://github.com/CherniqueHomer/comp3613a1.git)
+
+## Development tool
+
+The agent used for this project was GitHub Copilot in Visual Studio Code.
 
 ## YouTube URL
 
+[https://www.youtube.com/watch?v=hbA23ZTVwiY](https://www.youtube.com/watch?v=hbA23ZTVwiY)
+
+## Transcript coverage note
+
+Note on transcripts: This project was built across multiple VS Code sessions. Only the Phase 5 and Phase 6 sessions were captured by the transcript reader. The Phase 1–4 work is documented in the implementation notes above.
+
 ## Session transcripts
 
-Filled when the Guide builds the report: the agent writes each Guide chat to `docs/transcripts/<slug>.md` (Copilot Agent, Cursor, or OpenCode). `python manage.py report` packages them. Do not paste chats here during the build.
+Filled when the Guide builds the report: the agent writes chat markdown into `docs/transcripts/`; `python manage.py report` packages them.
+
+Guide packaged **2** chat(s) in `docs/transcripts/` (and `docs/transcripts.zip`).
+
+Index: [docs/transcripts/INDEX.md](transcripts/INDEX.md)
+
+- [`phase-5-build-polish`](transcripts/phase-5-build-polish.md)
+- [`phase-6-deploy`](transcripts/phase-6-deploy.md)
 
 ## Competency (student-judge)
 
-Filled when the report is built. Guide runs student-judge, writes `docs/judge.md`, and export appends the scorecard here.
+Filled by Guide from the student-judge run when this report was built.
+
+**Judged at:** 2026-10-12T19:29:44-04:00
+**Student / session:** Chernique Homer / COMP 3613 Assignment 1
+**Artifact:** Current Phase 6 Guide chat, accessible Phase 5 Guide transcript, and current `docs/report.md`, `docs/diagrams/`, and `docs/wireframes/`
+**Evidence pass:** re-read current report, diagrams, wireframe, available transcripts, current Guide chat, and native session availability; prior judge ignored
+**Phases in evidence:** 1–6 (COMP 3613; Phase 5 polish, Phase 6 deploy; never generic 0–5)
+
+### Totals
+
+| | Count / value |
+|--|--|
+| Metrics on rubric | 12 (M1–M12) |
+| N/A (excluded) | 0 |
+| Metrics scored | 12 |
+| Scoreable max | 12 × 4 |
+| Awarded total | 37 / 48 |
+| **Overall (avg of scored)** | **3.1 / 4** |
+| Impression mark | 16 / 20 (Guide sincerity confidence 0.80) |
+
+## Scorecard
+
+| ID | Metric | Score / 4 | In avg | Evidence |
+|----|--------|----------:|:------:|----------|
+| M1 | Phase discipline | 3 | yes | The report follows the design artefacts with workflow-by-workflow implementation and polish; deployment followed. The newest lease lifecycle behavior still needs student verification. |
+| M2 | Problem framing | 3 | yes | The report records the Student Accommodation project, three workflows, use cases, entities, and lifecycle rules. The earlier Phase 1–4 chat bodies were not retrievable for this pass. |
+| M3 | Decision ownership | 3 | yes | Student decisions in the report include overlapping pending requests, automatic lease completion, booked/inactive status, and role-specific navigation. |
+| M4 | Artefact-before-code | 3 | yes | The current report embeds the UML use-case diagram and wireframe, coverage notes, and an ERD used for implementation. |
+| M5 | Verification habit | 3 | yes | The report records observations and corrections across listing, booking, and review flows; the student confirms seeded listings work, while the newest lease-reopen/booked-status behavior remains unverified. |
+| M6 | Assignment fit | 3 | yes | The report documents model/repository/service work and thin routes; an initial router-layer choice was corrected, and later route checks passed. |
+| M7 | Slice explanation | 3 | yes | Code-check notes record model, repository, service, and router attempts, including the student's implementation of review eligibility checks. |
+| M8 | Prompt quality | 3 | yes | The student gave concrete workflow and polish directions, including “after the time has up and the lease has completed allow the tenant to make it available again for booking”. |
+| M9 | Response to pushback | 3 | yes | The student continued with practical refinements and verification, confirmed the deployed seed listing works, and asked for the deployment and video URLs to be clickable in the PDF. |
+| M10 | Integrity | 3 | yes | Two sincerity rounds are recorded; the student clarified branding decisions and confidence rose to 0.80. No course-skill edits are evident, and the report's skill-integrity marker passes. |
+| M11 | Provenance continuity | 3 | yes | Implementation, deployment, seeded-listing confirmation, and the supplied repository URL remain part of the same accommodation project. |
+| M12 | Sincerity trajectory | 4 | yes | Two rounds (2 then 4 questions) moved confidence from 0.55 to 0.80, trend up; the concern was cleared. |
+
+## Strengths
+
+- Student-owned the accommodation workflows and important booking/listing lifecycle choices.
+- The report records verification and polish across listing, booking, and review, including concrete mismatches and follow-up changes.
+- Layer-aware code checks are documented, including corrected thin-route attempts.
+- The public Render URL and health-check result are recorded; the student confirms the deployed seed listing works.
+- The branding concern was resolved through the student's own clarifications, with confidence rising to 0.80.
+
+## Gaps (priority order)
+
+1. The latest lease-completion reactivation and Booked / Inactive display were implemented after earlier workflow verification; the student has not yet reported testing those behaviors.
+2. The student confirmed the deployed seeded listing works, resolving the earlier empty-seed concern. Explicit sign-in confirmation for each marker account after the seeding fix is still absent.
+
+## Phase gate status
+
+| Phase | Status | Note |
+|-------|--------|------|
+| 1 | met | Project and three workflows are recorded in the report. |
+| 2 | met | UML use-case diagram is present and embedded. |
+| 3 | met | Student Accommodation ERD and relationship/business-rule notes are present. |
+| 4 | met | Wireframe image is embedded and listed use cases have coverage blocks. |
+| 5 | partial | Workflows received verification and polish; the newest lease-reopen and booked-status changes still need student verification. |
+| 6 | partial | Public URL, health result, marker credentials, and working seeded listing are recorded. Explicit deployed sign-in checks for each marker remain unconfirmed. |
+
+## Recommended next practice
+
+- Verify a completed lease can reactivate the listing and permit a new booking; separately confirm each marker login on the deployed app.
+
+## Integrity note
+
+- Cleared after suspicion spiral: initial branding ambiguity was questioned; the student clarified choices and sincerity confidence rose to 0.80. No edited-skill evidence was found; the report's integrity marker passes.
+
+## Provenance flags
+
+- No unresolved paste-back flag. Four earlier native sessions (Phases 1–4) are listed for the workspace, but their session-context records returned empty transcripts; current report artefacts and accessible Phase 5/6 transcript files were used.
+
+## Sincerity log summary
+
+- Blocks found: 2 | max round: 2 | min/mean/final confidence: 0.55 / 0.675 / 0.80 | trend: up | cleared: yes
+
+## Skips
+
+- Skips: 1/3 used
+- Property SQLModel snippet — assumed: Property uses the ERD fields; the report records verification against the student's second attempt.
 
 ## Skill integrity
 
-Filled by `python manage.py report`. Do not edit the course skills.
+Course skills are hashed at export and compared to `.agents/skills.lock.json`. Do not edit `.agents/skills/`, `.cursor/skills/`, or `AGENTS.md`.
+
+- Status: **pass**
+- Root: `e84cd692d0b85eefe546385661958c27d07e8be6c5176a82012f68ccff5c8beb`
+- none
